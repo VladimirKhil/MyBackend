@@ -1,0 +1,46 @@
+﻿using MyBackend.Service.Contract;
+using MyBackend.Service.Contract.Models;
+using System.Net;
+using System.Net.Http.Json;
+
+namespace MyBackend.Service.Client;
+
+/// <ingeritdoc />
+internal sealed class AdminApi : IAdminApi
+{
+    private readonly HttpClient _client;
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="AdminApi" /> class.
+    /// </summary>
+    /// <param name="client">HTTP client to use.</param>
+    public AdminApi(HttpClient client) => _client = client;
+
+    public async Task AddNewsAsync(NewsItem newsItem, CancellationToken cancellationToken = default)
+    {
+        using var response = await _client.PostAsJsonAsync("admin/news", newsItem, cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorMessage = await GetErrorMessageAsync(response, cancellationToken);
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private static async Task<string> GetErrorMessageAsync(HttpResponseMessage response, CancellationToken cancellationToken)
+    {
+        var serverError = await response.Content.ReadAsStringAsync(cancellationToken);
+
+        if (response.StatusCode == HttpStatusCode.BadGateway)
+        {
+            return $"{response.StatusCode}: Bad Gateway";
+        }
+
+        if (response.StatusCode == HttpStatusCode.TooManyRequests)
+        {
+            return $"{response.StatusCode}: Too many requests. Try again later";
+        }
+
+        return $"{response.StatusCode}: {serverError}";
+    }
+}

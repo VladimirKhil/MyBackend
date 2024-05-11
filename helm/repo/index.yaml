@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  mybackend:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-05-11T11:10:00.0587143+02:00"
+    description: A service for site backend
+    digest: 6f59ea070fab97ca18a7a4ce134ccc53841710d63d1133e038572371e3afe5ca
+    name: mybackend
+    type: application
+    urls:
+    - mybackend-1.0.0.tgz
+    version: 1.0.0
+generated: "2024-05-11T11:10:00.056592+02:00"
