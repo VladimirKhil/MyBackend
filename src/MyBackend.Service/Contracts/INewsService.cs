@@ -8,5 +8,5 @@ public interface INewsService
 
     Task<int[]> GetYearsAsync(CancellationToken cancellationToken = default);
 
-    Task<NewsItem[]> GetNewsAsync(int year, CancellationToken cancellationToken = default);
+    Task<NewsItem[]> GetNewsAsync(int year, string? culture = null, CancellationToken cancellationToken = default);
 }

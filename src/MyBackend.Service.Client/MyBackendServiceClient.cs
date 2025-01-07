@@ -6,6 +6,10 @@ internal sealed class MyBackendServiceClient : IMyBackendServiceClient
 {
     public INewsApi News { get; }
 
+    public IBlogsApi Blogs { get; }
+
+    public ITagsApi Tags { get; }
+
     public IAdminApi Admin { get; }
 
     /// <summary>
@@ -15,6 +19,8 @@ internal sealed class MyBackendServiceClient : IMyBackendServiceClient
     public MyBackendServiceClient(HttpClient client)
     {
         News = new NewsApi(client);
+        Blogs = new BlogsApi(client);
+        Tags = new TagsApi(client);
         Admin = new AdminApi(client);
     }
 }

@@ -14,6 +14,8 @@ internal abstract class TestsBase
 {
     protected INewsService NewsService { get; }
 
+    protected IBlogsService BlogsService { get; }
+
     public TestsBase()
     {
         var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
@@ -31,9 +33,11 @@ internal abstract class TestsBase
         services.AddSingleton<ILoggerFactory, NullLoggerFactory>();
         services.AddSingleton<ILogger<NewsService>, NullLogger<NewsService>>();
         services.AddTransient<INewsService, NewsService>();
+        services.AddTransient<IBlogsService, BlogsService>();
 
         var serviceProvider = services.BuildServiceProvider();
 
         NewsService = serviceProvider.GetRequiredService<INewsService>();
+        BlogsService = serviceProvider.GetRequiredService<IBlogsService>();
     }
 }

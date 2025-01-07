@@ -16,7 +16,7 @@ public sealed class NewsService(MyBackendConnection connection) : INewsService
             },
             cancellationToken);
 
-    public async Task<NewsItem[]> GetNewsAsync(int year, CancellationToken cancellationToken)
+    public async Task<NewsItem[]> GetNewsAsync(int year, string? culture = null, CancellationToken cancellationToken = default)
     {
         var news = await connection.News.Where(n => n.DateTime.Year == year).OrderByDescending(n => n.DateTime).ToListAsync(cancellationToken);
         return news.Select(n => new NewsItem(n.DateTime, n.Text ?? "")).ToArray();

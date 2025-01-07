@@ -7,6 +7,7 @@ using MyBackend.Service.Configuration;
 using MyBackend.Service.Contract.Models;
 using MyBackend.Service.Contract.Response;
 using MyBackend.Service.Contracts;
+using MyBackend.Service.EndpointDefinitions;
 using MyBackend.Service.Metrics;
 using MyBackend.Service.Middlewares;
 using MyBackend.Service.Services;
@@ -39,20 +40,19 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 {
     services.Configure<MyBackendOptions>(configuration.GetSection(MyBackendOptions.ConfigurationSectionName));
 
-    services.AddControllers().AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.TypeInfoResolverChain.Insert(0, NewsItemContext.Default);
-        options.JsonSerializerOptions.TypeInfoResolverChain.Insert(0, NewsResponseContext.Default);
-        options.JsonSerializerOptions.TypeInfoResolverChain.Insert(0, YearsResponseContext.Default);
-    });
-
     services.AddTransient<INewsService, NewsService>();
+    services.AddTransient<IBlogsService, BlogsService>();
 
     services.AddMyBackendDatabase(configuration);
     ConfigureMigrationRunner(services, configuration);
 
     AddRateLimits(services, configuration);
     AddMetrics(services);
+
+    services.ConfigureHttpJsonOptions(options =>
+    {
+        options.SerializerOptions.TypeInfoResolverChain.Insert(0, MyBackendContext.Default);
+    });
 }
 
 static void ConfigureMigrationRunner(IServiceCollection services, IConfiguration configuration)
@@ -102,8 +102,10 @@ static void Configure(WebApplication app)
 
     app.UseMiddleware<ErrorHandlingMiddleware>();
 
-    app.UseRouting();
-    app.MapControllers();
+    NewsEndpointDefinitions.DefineNewsEndpoint(app);
+    BlogsEndpointDefinitions.DefineBlogsEndpoints(app);
+    TagsEndpointDefinitions.DefineTagsEndpoints(app);
+    AdminEndpointDefinitions.DefineAdminEndpoint(app);
 
     app.UseIpRateLimiting();
 
@@ -139,11 +141,7 @@ static void ApplyMigrations(WebApplication app)
 }
 
 [JsonSerializable(typeof(NewsItem))]
-internal partial class NewsItemContext : JsonSerializerContext { }
-
 [JsonSerializable(typeof(NewsResponse))]
-internal partial class NewsResponseContext : JsonSerializerContext { }
-
 [JsonSerializable(typeof(int[]))]
 [JsonSerializable(typeof(YearsResponse))]
-internal partial class YearsResponseContext : JsonSerializerContext { }
+internal partial class MyBackendContext : JsonSerializerContext { }

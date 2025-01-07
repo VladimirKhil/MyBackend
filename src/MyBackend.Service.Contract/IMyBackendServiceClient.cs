@@ -11,6 +11,16 @@ public interface IMyBackendServiceClient
     INewsApi News { get; }
 
     /// <summary>
+    /// Provides API for working with blogs.
+    /// </summary>
+    IBlogsApi Blogs { get; }
+
+    /// <summary>
+    /// Provides API for working with tags.
+    /// </summary>
+    ITagsApi Tags { get; }
+
+    /// <summary>
     /// Provides admin level API.
     /// </summary>
     IAdminApi Admin { get; }

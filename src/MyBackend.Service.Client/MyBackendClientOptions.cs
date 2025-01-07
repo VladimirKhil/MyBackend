@@ -31,4 +31,9 @@ internal sealed class MyBackendClientOptions
     /// Client timeout.
     /// </summary>
     public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(30);
+
+    /// <summary>
+    /// Requests localization culture.
+    /// </summary>
+    public string? Culture { get; set; }
 }

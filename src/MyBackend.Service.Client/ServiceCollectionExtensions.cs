@@ -35,6 +35,11 @@ public static class ServiceCollectionExtensions
                     client.BaseAddress = serviceUri != null ? new Uri(serviceUri, "api/v1/") : null;
                     client.Timeout = options.Timeout;
 
+                    if (options.Culture != null)
+                    {
+                        client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(options.Culture));
+                    }
+
                     SetAuthSecret(options, client);
                 }
 
