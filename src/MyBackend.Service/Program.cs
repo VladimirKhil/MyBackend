@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using MyBackend.Database;
 using MyBackend.Service.Configuration;
 using MyBackend.Service.Contract.Models;
+using MyBackend.Service.Contract.Request;
 using MyBackend.Service.Contract.Response;
 using MyBackend.Service.Contracts;
 using MyBackend.Service.EndpointDefinitions;
@@ -144,4 +145,8 @@ static void ApplyMigrations(WebApplication app)
 [JsonSerializable(typeof(NewsResponse))]
 [JsonSerializable(typeof(int[]))]
 [JsonSerializable(typeof(YearsResponse))]
+[JsonSerializable(typeof(TagCreateRequest))]
+[JsonSerializable(typeof(TagsResponse))]
+[JsonSerializable(typeof(BlogEntryCreateRequest))]
+[JsonSerializable(typeof(BlogEntriesPage))]
 internal partial class MyBackendContext : JsonSerializerContext { }

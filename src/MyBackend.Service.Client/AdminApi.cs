@@ -1,5 +1,6 @@
 ﻿using MyBackend.Service.Contract;
 using MyBackend.Service.Contract.Models;
+using MyBackend.Service.Contract.Request;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -25,6 +26,32 @@ internal sealed class AdminApi : IAdminApi
             var errorMessage = await GetErrorMessageAsync(response, cancellationToken);
             throw new Exception(errorMessage);
         }
+    }
+
+    public async Task<int> AddTagAsync(string tagValue, CancellationToken cancellationToken = default)
+    {
+        using var response = await _client.PostAsJsonAsync("admin/tags", new TagCreateRequest(tagValue), cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorMessage = await GetErrorMessageAsync(response, cancellationToken);
+            throw new Exception(errorMessage);
+        }
+
+        return await response.Content.ReadFromJsonAsync<int>(cancellationToken: cancellationToken);
+    }
+
+    public async Task<int> AddEntryAsync(BlogEntryCreateRequest blogEntryCreateRequest, CancellationToken cancellationToken = default)
+    {
+        using var response = await _client.PostAsJsonAsync("admin/blogs", blogEntryCreateRequest, cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorMessage = await GetErrorMessageAsync(response, cancellationToken);
+            throw new Exception(errorMessage);
+        }
+
+        return await response.Content.ReadFromJsonAsync<int>(cancellationToken: cancellationToken);
     }
 
     private static async Task<string> GetErrorMessageAsync(HttpResponseMessage response, CancellationToken cancellationToken)

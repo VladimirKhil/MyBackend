@@ -14,9 +14,9 @@ public sealed class BlogsApi : IBlogsApi
     /// <param name="client">HTTP client to use.</param>
     public BlogsApi(HttpClient client) => _client = client;
 
-    public async Task<BlogEntriesPage> GetBlogEntriesAsync(string? tag = null, int from = 0, int count = 10, CancellationToken cancellationToken = default)
+    public async Task<BlogEntriesPage> GetBlogEntriesAsync(int? tagId = null, int from = 0, int count = 10, CancellationToken cancellationToken = default)
     {
-        var tagParam = string.IsNullOrEmpty(tag) ? "" : $"tag={tag}&";
+        var tagParam = tagId.HasValue ? $"tagId={tagId}&" : "";
         return (await _client.GetFromJsonAsync<BlogEntriesPage>($"blogs?{tagParam}from={from}&count={count}", cancellationToken)) ?? new BlogEntriesPage();
     }
 }

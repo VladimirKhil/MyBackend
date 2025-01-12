@@ -1,5 +1,6 @@
 ﻿using MyBackend.Service.Contract;
 using MyBackend.Service.Contract.Models;
+using MyBackend.Service.Contract.Response;
 using System.Net.Http.Json;
 
 namespace MyBackend.Service.Client;
@@ -15,5 +16,5 @@ internal sealed class TagsApi : ITagsApi
     public TagsApi(HttpClient client) => _client = client;
 
     public async Task<Tag[]> GetTagsAsync(CancellationToken cancellationToken = default) =>
-        (await _client.GetFromJsonAsync<Tag[]>("tags", cancellationToken)) ?? Array.Empty<Tag>();
+        (await _client.GetFromJsonAsync<TagsResponse>("tags", cancellationToken))?.Tags ?? Array.Empty<Tag>();
 }
