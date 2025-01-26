@@ -2,8 +2,18 @@ apiVersion: v1
 entries:
   mybackend:
   - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2025-01-26T17:08:19.1666817+01:00"
+    description: A service for site backend
+    digest: 69de3a891b14b5f787b5556ac9b9c8963ffb79b4e3b9595c954404d8078ad104
+    name: mybackend
+    type: application
+    urls:
+    - mybackend-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
     appVersion: 1.1.0
-    created: "2025-01-17T09:12:40.5060483+01:00"
+    created: "2025-01-26T17:08:19.1663823+01:00"
     description: A service for site backend
     digest: f3fcd7990479dbce7450b7b3fee64439d82f6fc2d1a0359959eadf91a839eaf0
     name: mybackend
@@ -13,7 +23,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-01-17T09:12:40.505047+01:00"
+    created: "2025-01-26T17:08:19.1562561+01:00"
     description: A service for site backend
     digest: 6f59ea070fab97ca18a7a4ce134ccc53841710d63d1133e038572371e3afe5ca
     name: mybackend
@@ -21,4 +31,4 @@ entries:
     urls:
     - mybackend-1.0.0.tgz
     version: 1.0.0
-generated: "2025-01-17T09:12:40.4943656+01:00"
+generated: "2025-01-26T17:08:19.1372846+01:00"
