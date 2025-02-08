@@ -11,5 +11,12 @@ public interface IBlogsService
 
     Task<int> AddEntryAsync(BlogEntryCreateRequest entry, CancellationToken cancellationToken = default);
 
-    Task<BlogEntriesPage> GetEntriesAsync(string? culture = null, int? tagId = null, int from = 0, int count = 10, CancellationToken cancellationToken = default);
+    Task<BlogEntriesPage> GetEntriesAsync(
+        string? culture = null,
+        int? tagId = null,
+        int from = 0,
+        int count = 10,
+        CancellationToken cancellationToken = default);
+
+    Task<BlogEntry> GetEntryAsync(int id, string? culture = null, CancellationToken cancellationToken = default);
 }

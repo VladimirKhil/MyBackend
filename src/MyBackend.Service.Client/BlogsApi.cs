@@ -19,4 +19,8 @@ public sealed class BlogsApi : IBlogsApi
         var tagParam = tagId.HasValue ? $"tagId={tagId}&" : "";
         return (await _client.GetFromJsonAsync<BlogEntriesPage>($"blogs?{tagParam}from={from}&count={count}", cancellationToken)) ?? new BlogEntriesPage();
     }
+
+    public async Task<BlogEntry> GetBlogEntryAsync(int id, CancellationToken cancellationToken = default) =>
+        await _client.GetFromJsonAsync<BlogEntry>($"blogs/{id}", cancellationToken)
+            ?? throw new InvalidOperationException($"Blog entry with ID {id} not found");
 }

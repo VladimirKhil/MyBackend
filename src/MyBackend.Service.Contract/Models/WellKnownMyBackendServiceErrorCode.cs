@@ -5,4 +5,8 @@
 /// </summary>
 public enum WellKnownMyBackendServiceErrorCode
 {
+    /// <summary>
+    /// The blog entry was not found.
+    /// </summary>
+    BlogEntryNotFound,
 }

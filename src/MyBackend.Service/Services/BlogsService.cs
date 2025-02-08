@@ -3,6 +3,7 @@ using MyBackend.Database;
 using MyBackend.Service.Contract.Models;
 using MyBackend.Service.Contract.Request;
 using MyBackend.Service.Contracts;
+using MyBackend.Service.Exceptions;
 
 namespace MyBackend.Service.Services;
 
@@ -62,5 +63,22 @@ public sealed class BlogsService(MyBackendConnection connection) : IBlogsService
         var total = await query.CountAsync(cancellationToken);
 
         return new BlogEntriesPage { Entries = entries, TotalCount = total };
+    }
+
+    public async Task<BlogEntry> GetEntryAsync(int id, string? culture = null, CancellationToken cancellationToken = default)
+    {
+        var query = from entry in connection.BlogEntries
+                    join entryTag in connection.BlogEntriesTags on entry.Id equals entryTag.BlogEntryId
+                    join tag in connection.Tags on entryTag.TagId equals tag.Id into tags
+                    where entry.Id == id
+                    select new BlogEntry(
+                        entry.Id,
+                        entry.DateTime,
+                        entry.Title,
+                        entry.Text,
+                        tags.DefaultIfEmpty().Select(tag => new Tag(tag!.Id, tag!.Value)).ToArray());
+        
+        return await query.FirstOrDefaultAsync(cancellationToken)
+            ?? throw new ServiceException(WellKnownMyBackendServiceErrorCode.BlogEntryNotFound, System.Net.HttpStatusCode.NotFound);
     }
 }

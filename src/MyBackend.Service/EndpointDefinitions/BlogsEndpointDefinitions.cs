@@ -24,5 +24,16 @@ public static class BlogsEndpointDefinitions
             var entriesPage = await blogsService.GetEntriesAsync(culture, tagId, from, count, cancellationToken);
             return Results.Ok(entriesPage);
         });
+
+        app.MapGet("/api/v1/blogs/{id}", async (
+            IBlogsService blogsService,
+            int id,
+            [FromHeader(Name = "Accept-Language")] string acceptLanguage = Constants.DefaultCultureCode,
+            CancellationToken cancellationToken = default) =>
+        {
+            var culture = CultureHelper.GetCultureFromAcceptLanguageHeader(acceptLanguage);
+            var entry = await blogsService.GetEntryAsync(id, culture, cancellationToken);
+            return Results.Ok(entry);
+        });
     }
 }
